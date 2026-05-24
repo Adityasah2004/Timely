@@ -31,7 +31,14 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
+
+# internal planning/handover docs
+HANDOVER.md
+FUNCTIONAL_PLAN.md
+AGENTS.md
+CLAUDE.md
 
 # typescript
 *.tsbuildinfo

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "timely-app",
-    "slug": "timely-app",
+    "name": "Timely",
+    "slug": "timely",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,6 +10,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "ai.resonera.timely",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -20,6 +21,25 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#141414",
+          "defaultChannel": "timer"
+        }
+      ]
+    ],
+    "extra": {
+      "supabaseUrl": "https://hmxdkdpfktlqipkwplrz.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhteGRrZHBma3RscWlwa3dwbHJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NTgwODIsImV4cCI6MjA5NTAzNDA4Mn0.6P44L9kRdyddP5iL_2cYwOOeHgMcpcT8TKL_6Fh3MK8",
+      "eas": {
+        "projectId": "728740c4-728f-4a2f-86c7-0ffea7bf253c"
+      }
+    },
+    "owner": "adityasah04"
   }
 }
