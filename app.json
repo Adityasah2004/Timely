@@ -34,8 +34,8 @@
       ]
     ],
     "extra": {
-      "supabaseUrl": "https://hmxdkdpfktlqipkwplrz.supabase.co",
-      "supabaseAnonKey": "REDACTED_SUPABASE_ANON_KEY",
+      "supabaseUrl": "$SUPABASE_URL",
+      "supabaseAnonKey": "$SUPABASE_ANON_KEY",
       "eas": {
         "projectId": "728740c4-728f-4a2f-86c7-0ffea7bf253c"
       }
