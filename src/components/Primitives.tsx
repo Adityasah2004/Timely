@@ -283,7 +283,7 @@ export const styles = StyleSheet.create({
   screenTitle: {
     fontWeight: '900',
     fontSize: 38,
-    lineHeight: 38 * 0.93,
+    lineHeight: 46,
     letterSpacing: -1.3,
     marginTop: 8,
     color: colors.fg1,
@@ -326,7 +326,6 @@ export const styles = StyleSheet.create({
   statNum: {
     fontWeight: '900',
     letterSpacing: -1.3,
-    lineHeight: 0.9,
     color: colors.fg1,
   } as TextStyle,
 });

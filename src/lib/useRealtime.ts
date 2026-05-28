@@ -1,7 +1,29 @@
 import { useEffect, useCallback } from 'react';
 import { supabase } from './supabase';
 import type { DbEvent, DbTodo, DbAlarm, DbActivity, DbNotification } from './supabase';
-import type { UserId, CalEvent, Todo, Alarm, ActivityItem } from './types';
+import type { UserId, CalEvent, Todo, Alarm, ActivityItem, ChatMessage, StartupDoc } from './types';
+
+interface DbMessage {
+  id: string;
+  household_id: string;
+  sender_id: string | null;
+  sender_short: string;
+  content: string;
+  is_system: boolean;
+  created_at: string;
+}
+
+interface DbDoc {
+  id: string;
+  household_id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  attachments?: any[];
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
 function dbEvent(r: DbEvent): CalEvent {
   return {
@@ -43,6 +65,29 @@ function dbAlarm(r: DbAlarm): Alarm {
   };
 }
 
+function dbMessage(r: DbMessage): ChatMessage {
+  return {
+    id: r.id,
+    senderShort: r.sender_short as UserId | 'S',
+    content: r.content,
+    isSystem: r.is_system,
+    timestamp: new Date(r.created_at).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false }),
+    createdAt: r.created_at,
+  };
+}
+
+function dbDoc(r: DbDoc): StartupDoc {
+  return {
+    id: r.id,
+    title: r.title,
+    content: r.content,
+    tags: Array.isArray(r.tags) ? r.tags : [],
+    attachments: Array.isArray(r.attachments) ? r.attachments : [],
+    createdBy: r.created_by,
+    updatedAt: r.updated_at,
+  };
+}
+
 export type { DbNotification };
 
 interface RealtimeCallbacks {
@@ -52,6 +97,8 @@ interface RealtimeCallbacks {
   onAlarms:        (as: Alarm[]) => void;
   onActivity:      (a: ActivityItem[]) => void;
   onNotifications: (n: DbNotification[]) => void;
+  onMessages:      (msgs: ChatMessage[]) => void;
+  onDocs:          (docs: StartupDoc[]) => void;
 }
 
 // Returns Mon and Sun ISO dates for the week containing `date`
@@ -72,13 +119,13 @@ function weekRange(date: Date): { from: string; to: string } {
   return { from: fmt(mon), to: fmt(sun) };
 }
 
-export function useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivity, onNotifications }: RealtimeCallbacks): { refresh: () => Promise<void> } {
+export function useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivity, onNotifications, onMessages, onDocs }: RealtimeCallbacks): { refresh: () => Promise<void> } {
   const fetchAll = useCallback(async () => {
     if (!householdId) return;
 
     const { from, to } = weekRange(new Date());
 
-    const [{ data: evs }, { data: todos }, { data: alarms }, { data: acts }, { data: notifs }] = await Promise.all([
+    const [{ data: evs }, { data: todos }, { data: alarms }, { data: acts }, { data: notifs }, { data: msgs }, { data: docs }] = await Promise.all([
       // Fetch entire current week's events
       supabase
         .from('events')
@@ -109,6 +156,17 @@ export function useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivi
         .eq('household_id', householdId)
         .order('created_at', { ascending: false })
         .limit(50),
+      supabase
+        .from('messages')
+        .select('*')
+        .eq('household_id', householdId)
+        .order('created_at', { ascending: true })
+        .limit(100),
+      supabase
+        .from('docs')
+        .select('*')
+        .eq('household_id', householdId)
+        .order('updated_at', { ascending: false }),
     ]);
 
     if (evs)    onEvents(evs.map(dbEvent));
@@ -122,6 +180,8 @@ export function useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivi
       badge: r.badge,
     })));
     if (notifs) onNotifications(notifs as DbNotification[]);
+    if (msgs)   onMessages(msgs.map(dbMessage));
+    if (docs)   onDocs(docs.map(dbDoc));
   }, [householdId]);
 
   useEffect(() => {
@@ -135,6 +195,8 @@ export function useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivi
       .on('postgres_changes', { event: '*', schema: 'public', table: 'alarms',        filter: `household_id=eq.${householdId}` }, fetchAll)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'activity',      filter: `household_id=eq.${householdId}` }, fetchAll)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `household_id=eq.${householdId}` }, fetchAll)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages',      filter: `household_id=eq.${householdId}` }, fetchAll)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'docs',          filter: `household_id=eq.${householdId}` }, fetchAll)
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };

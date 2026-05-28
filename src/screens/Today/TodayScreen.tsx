@@ -66,7 +66,7 @@ export function TodayScreen() {
                 </View>
               )}
             </View>
-            <Text style={{ fontWeight: '900', fontSize: 30, lineHeight: 29, letterSpacing: -1, color: '#fff', marginTop: 6 }}>
+            <Text style={{ fontWeight: '900', fontSize: 30, lineHeight: 34, letterSpacing: -1, color: '#fff', marginTop: 6 }}>
               {current.title}
             </Text>
             <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.6, color: colors.fgInv4, marginTop: 8 }}>
@@ -75,7 +75,7 @@ export function TodayScreen() {
           </>
         ) : (
           <>
-            <Text style={{ fontWeight: '900', fontSize: 32, lineHeight: 30, letterSpacing: -1, color: '#fff' }}>
+            <Text style={{ fontWeight: '900', fontSize: 32, lineHeight: 36, letterSpacing: -1, color: '#fff' }}>
               Free until <Text style={{ color: colors.fgInv4 }}>{next ? next.start : '—'}</Text>
             </Text>
             <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.6, color: colors.fgInv4, marginTop: 10 }}>
@@ -94,15 +94,19 @@ export function TodayScreen() {
         </View>
       </CardInv>
 
-      {/* Members strip — scrollable, works for 2-4 people */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 22 }} contentContainerStyle={{ gap: 10 }}>
-        {activeSlots.map(uid => {
+      {/* Members strip — scrollable for 3+ people, full-width flex-split for 2 people */}
+      {(() => {
+        const isScrollable = activeSlots.length > 2;
+        const membersContent = activeSlots.map(uid => {
           const memberCurrent = events.find(e => (e.who === uid || e.who === 'B') && toMins(e.start) <= nowMin && toMins(e.end) > nowMin);
           const memberNext = events.find(e => (e.who === uid || e.who === 'B') && toMins(e.start) > nowMin);
           const hidden = memberCurrent && memberCurrent.priv && memberCurrent.who !== 'B' && memberCurrent.who !== viewer;
           const isMe = uid === viewer;
           return (
-            <Card key={uid} style={{ width: 160, padding: 14 }}>
+            <Card key={uid} style={{
+              ...(isScrollable ? { width: 150 } : { flex: 1 }),
+              padding: 14
+            }}>
               <View style={[styles.row, { gap: 8, marginBottom: 8 }]}>
                 <UserChip id={uid} size="lg" />
                 <View style={{ flex: 1 }}>
@@ -117,16 +121,33 @@ export function TodayScreen() {
                 </>
               ) : memberNext ? (
                 <>
-                  <Text style={{ fontSize: 13, fontWeight: '600' }}>Free</Text>
+                  <Text style={{ fontSize: 13, fontWeight: '600' }} numberOfLines={1}>Free</Text>
                   <Text style={{ fontFamily: 'Courier', fontSize: 9, letterSpacing: 1.6, textTransform: 'uppercase', color: colors.fg5, marginTop: 3 }}>NEXT {memberNext.start}</Text>
                 </>
               ) : (
-                <Text style={{ fontFamily: 'Courier', fontSize: 9, letterSpacing: 1.6, textTransform: 'uppercase', color: colors.fg5 }}>WRAPPED · FREE</Text>
+                <>
+                  <Text style={{ fontSize: 13, fontWeight: '600' }} numberOfLines={1}>Free</Text>
+                  <Text style={{ fontFamily: 'Courier', fontSize: 9, letterSpacing: 1.6, textTransform: 'uppercase', color: colors.fg5, marginTop: 3 }}>WRAPPED</Text>
+                </>
               )}
             </Card>
           );
-        })}
-      </ScrollView>
+        });
+
+        if (isScrollable) {
+          return (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 22 }} contentContainerStyle={{ gap: 12 }}>
+              {membersContent}
+            </ScrollView>
+          );
+        }
+
+        return (
+          <View style={{ flexDirection: 'row', gap: 12, marginBottom: 22 }}>
+            {membersContent}
+          </View>
+        );
+      })()}
 
       {/* Up next */}
       <SecLabel count={Math.min(4, upcoming.length)} right={
@@ -182,28 +203,28 @@ export function TodayScreen() {
         ))}
       </Card>
 
-      {/* Focus quick-start */}
+      {/* Startup Docs quick-start */}
       <CardAlt>
         <View style={[styles.between, { marginBottom: 10 }]}>
-          <Text style={{ fontFamily: 'Courier', fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: colors.fg5 }}>DEEP FOCUS · TOGETHER</Text>
+          <Text style={{ fontFamily: 'Courier', fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: colors.fg5 }}>STARTUP SPEC & WIKI</Text>
           <View style={styles.row}>
             {activeSlots.map((u, i) => (
               <View key={u} style={{ marginLeft: i > 0 ? -6 : 0 }}><UserChip id={u} /></View>
             ))}
           </View>
         </View>
-        <Text style={{ fontWeight: '900', fontSize: 22, lineHeight: 21, letterSpacing: -0.6 }}>
-          Quiet the house.{' '}
-          <Text style={{ color: colors.fg9 }}>50 min, side by side.</Text>
+        <Text style={{ fontWeight: '900', fontSize: 22, lineHeight: 26, letterSpacing: -0.6 }}>
+          Align the founders.{' '}
+          <Text style={{ color: colors.fg9 }}>PRDs, pitches & metrics.</Text>
         </Text>
         <View style={[styles.row, { gap: 8, marginTop: 14 }]}>
           <TouchableOpacity style={{ flex: 1, height: 44, backgroundColor: colors.foreground, borderRadius: 12, alignItems: 'center', justifyContent: 'center' }}
-            onPress={() => dispatch({ t: 'tab', tab: 'focus' })}>
-            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>Start focus</Text>
+            onPress={() => dispatch({ t: 'tab', tab: 'docs' })}>
+            <Text style={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>Open Specs</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ height: 44, paddingHorizontal: 18, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: colors.border15, alignItems: 'center', justifyContent: 'center' }}
-            onPress={() => dispatch({ t: 'tab', tab: 'focus' })}>
-            <Text style={{ fontWeight: '600', fontSize: 14 }}>Solo</Text>
+            onPress={() => dispatch({ t: 'tab', tab: 'docs' })}>
+            <Text style={{ fontWeight: '600', fontSize: 14 }}>Browse</Text>
           </TouchableOpacity>
         </View>
       </CardAlt>

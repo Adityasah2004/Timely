@@ -8,14 +8,14 @@ import { TabBar } from './src/navigation/TabBar';
 import { TodayScreen } from './src/screens/Today/TodayScreen';
 import { PlanScreen } from './src/screens/Plan/PlanScreen';
 import { TodosScreen } from './src/screens/Todos/TodosScreen';
-import { AlarmsScreen } from './src/screens/Alarms/AlarmsScreen';
-import { FocusScreen } from './src/screens/Focus/FocusScreen';
+import { ChatScreen } from './src/screens/Chat/ChatScreen';
+import { DocsScreen } from './src/screens/Docs/DocsScreen';
 import { YouScreen } from './src/screens/You/YouScreen';
 import { NotificationsScreen } from './src/screens/Notifications/NotificationsScreen';
 import { OnboardingScreen } from './src/screens/Onboarding/OnboardingScreen';
 import { AuthScreen } from './src/screens/Auth/AuthScreen';
 import { HouseholdScreen } from './src/screens/Auth/HouseholdScreen';
-import { EventSheet, AddEventSheet, AddTodoSheet, AddAlarmSheet } from './src/components/Sheets';
+import { EventSheet, AddEventSheet, AddTodoSheet } from './src/components/Sheets';
 
 function AppInner() {
   const { state, dispatch } = useStore();
@@ -70,8 +70,8 @@ function AppInner() {
         <View style={{ flex: 1, display: tab === 'today' ? 'flex' : 'none' }}><TodayScreen /></View>
         <View style={{ flex: 1, display: tab === 'plan' ? 'flex' : 'none' }}><PlanScreen /></View>
         <View style={{ flex: 1, display: tab === 'todos' ? 'flex' : 'none' }}><TodosScreen /></View>
-        <View style={{ flex: 1, display: tab === 'alarms' ? 'flex' : 'none' }}><AlarmsScreen /></View>
-        <View style={{ flex: 1, display: tab === 'focus' ? 'flex' : 'none' }}><FocusScreen /></View>
+        <View style={{ flex: 1, display: tab === 'chat' ? 'flex' : 'none' }}><ChatScreen /></View>
+        <View style={{ flex: 1, display: tab === 'docs' ? 'flex' : 'none' }}><DocsScreen /></View>
         <View style={{ flex: 1, display: tab === 'you' ? 'flex' : 'none' }}><YouScreen /></View>
         <View style={{ flex: 1, display: tab === 'notifications' ? 'flex' : 'none' }}><NotificationsScreen /></View>
       </View>
@@ -80,7 +80,6 @@ function AppInner() {
       <EventSheet />
       <AddEventSheet />
       <AddTodoSheet />
-      <AddAlarmSheet />
     </View>
   );
 }

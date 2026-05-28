@@ -80,11 +80,39 @@ export interface WorldClock {
   note: string;
 }
 
-export type TabName = 'today' | 'plan' | 'todos' | 'alarms' | 'focus' | 'you' | 'notifications';
+export interface ChatMessage {
+  id: string;
+  senderShort: UserId | 'S'; // '1'..'4' or 'S' for system/AI
+  content: string;
+  isSystem: boolean;
+  timestamp: string; // HH:MM
+  createdAt?: string; // ISO date string
+}
+
+export interface DocAttachment {
+  name: string;
+  size: number;
+  mimeType: string;
+  uri: string; // Public Supabase Storage URL
+}
+
+export interface StartupDoc {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  attachments: DocAttachment[];
+  createdBy: string | null;
+  updatedAt: string; // ISO
+}
+
+export type TabName = 'today' | 'plan' | 'todos' | 'chat' | 'docs' | 'you' | 'notifications';
 
 export type ModalKind =
   | { kind: 'event'; ev: CalEvent }
   | { kind: 'addEvent' }
   | { kind: 'addTodo' }
   | { kind: 'addAlarm' }
+  | { kind: 'addDoc' }
+  | { kind: 'doc'; doc: StartupDoc }
   | null;

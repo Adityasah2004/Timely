@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Keyboard, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../lib/tokens';
 import { useStore } from '../lib/store';
@@ -8,19 +8,42 @@ import type { TabName } from '../lib/types';
 import type { IconName } from '../components/Icon';
 
 const TABS: { id: TabName; label: string; icon: IconName }[] = [
-  { id: 'today',  label: 'Today',  icon: 'home'  },
-  { id: 'plan',   label: 'Plan',   icon: 'cal'   },
-  { id: 'todos',  label: 'To-do',  icon: 'check' },
-  { id: 'alarms', label: 'Alarms', icon: 'bell'  },
-  { id: 'focus',  label: 'Focus',  icon: 'bolt'  },
+  { id: 'today',  label: 'Today',  icon: 'home'    },
+  { id: 'plan',   label: 'Plan',   icon: 'cal'     },
+  { id: 'todos',  label: 'To-do',  icon: 'check'   },
+  { id: 'chat',   label: 'Chat',   icon: 'message' },
+  { id: 'docs',   label: 'Docs',   icon: 'note'    },
 ];
 
 export function TabBar() {
   const { state, dispatch } = useStore();
   const insets = useSafeAreaInsets();
+  const [bottomInset, setBottomInset] = useState(insets.bottom);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    if (insets.bottom > 0) {
+      setBottomInset(insets.bottom);
+    }
+  }, [insets.bottom]);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSub = Keyboard.addListener(showEvent, () => setKeyboardVisible(true));
+    const hideSub = Keyboard.addListener(hideEvent, () => setKeyboardVisible(false));
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
+  if (keyboardVisible) return null;
 
   return (
-    <View style={[tb.container, { bottom: 12 + insets.bottom }]}>
+    <View style={[tb.container, { bottom: 12 + bottomInset }]}>
       {TABS.map(tab => {
         const active = state.tab === tab.id;
         return (

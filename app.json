@@ -17,7 +17,17 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,7 +41,8 @@
           "color": "#141414",
           "defaultChannel": "timer"
         }
-      ]
+      ],
+      "expo-audio"
     ],
     "extra": {
       "supabaseUrl": "$SUPABASE_URL",
@@ -40,6 +51,12 @@
         "projectId": "728740c4-728f-4a2f-86c7-0ffea7bf253c"
       }
     },
-    "owner": "adityasah04"
+    "owner": "adityasah04",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/728740c4-728f-4a2f-86c7-0ffea7bf253c"
+    }
   }
 }

@@ -79,7 +79,7 @@ export function TodosScreen() {
 
       {ordered.length === 0 && (
         <CardAlt style={{ alignItems: 'center', padding: 32, marginBottom: 22 }}>
-          <Text style={{ fontWeight: '900', fontSize: 28, letterSpacing: -1, lineHeight: 27 }}>
+          <Text style={{ fontWeight: '900', fontSize: 28, letterSpacing: -1, lineHeight: 33 }}>
             Clean. <Text style={{ color: colors.fg9 }}>Nothing to do.</Text>
           </Text>
           <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.8, color: colors.fg5, marginTop: 12 }}>ENJOY THE QUIET, OR ADD SOMETHING.</Text>

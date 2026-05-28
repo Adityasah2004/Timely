@@ -63,7 +63,7 @@ function StepWelcome() {
   return (
     <View>
       <Text style={ob.monoSm}>HI, WE'RE</Text>
-      <Text style={{ fontWeight: '900', fontSize: 64, lineHeight: 58, letterSpacing: -3, marginTop: 16 }}>
+      <Text style={{ fontWeight: '900', fontSize: 64, lineHeight: 72, letterSpacing: -3, marginTop: 16 }}>
         Timely.{'\n'}
         <Text style={{ color: colors.fg9 }}>A clock{'\n'}for two.</Text>
       </Text>
@@ -93,7 +93,7 @@ function StepHouse() {
   return (
     <View>
       <Text style={ob.monoSm}>STEP 1 · THE HOUSE</Text>
-      <Text style={{ fontWeight: '900', fontSize: 38, lineHeight: 36, letterSpacing: -1.4, marginTop: 16 }}>
+      <Text style={{ fontWeight: '900', fontSize: 38, lineHeight: 44, letterSpacing: -1.4, marginTop: 16 }}>
         Who lives{'\n'}<Text style={{ color: colors.fg9 }}>in the house?</Text>
       </Text>
       <Text style={{ fontSize: 13, color: colors.fg5, fontWeight: '300', marginTop: 12, maxWidth: 280 }}>
@@ -150,7 +150,7 @@ function StepSharing() {
   return (
     <View>
       <Text style={ob.monoSm}>STEP 2 · SHARING</Text>
-      <Text style={{ fontWeight: '900', fontSize: 38, lineHeight: 36, letterSpacing: -1.4, marginTop: 16 }}>
+      <Text style={{ fontWeight: '900', fontSize: 38, lineHeight: 44, letterSpacing: -1.4, marginTop: 16 }}>
         Public is default.{'\n'}<Text style={{ color: colors.fg9 }}>Private when it matters.</Text>
       </Text>
       <Text style={{ fontSize: 13, color: colors.fg5, fontWeight: '300', marginTop: 12, maxWidth: 280 }}>
@@ -204,7 +204,7 @@ function StepWrap() {
   return (
     <View>
       <Text style={ob.monoSm}>STEP 3 · QUIET HOURS</Text>
-      <Text style={{ fontWeight: '900', fontSize: 38, lineHeight: 36, letterSpacing: -1.4, marginTop: 16 }}>
+      <Text style={{ fontWeight: '900', fontSize: 38, lineHeight: 44, letterSpacing: -1.4, marginTop: 16 }}>
         Phones dim{'\n'}<Text style={{ color: colors.fg9 }}>when the lights do.</Text>
       </Text>
       <Text style={{ fontSize: 13, color: colors.fg5, fontWeight: '300', marginTop: 12, maxWidth: 280 }}>
@@ -213,15 +213,15 @@ function StepWrap() {
       <CardInv style={{ marginTop: 22 }}>
         <Text style={{ fontFamily: 'Courier', fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: colors.fgInv4, marginBottom: 12 }}>BEDTIME · TOGETHER</Text>
         <View style={[S.row, { alignItems: 'baseline', gap: 12 }]}>
-          <Text style={{ fontWeight: '900', fontSize: 56, lineHeight: 50, letterSpacing: -2.5, color: '#fff' }}>23:00</Text>
+          <Text style={{ fontWeight: '900', fontSize: 56, lineHeight: 62, letterSpacing: -2.5, color: '#fff' }}>23:00</Text>
           <Text style={{ fontWeight: '900', fontSize: 24, color: colors.fgInv4 }}>→</Text>
-          <Text style={{ fontWeight: '900', fontSize: 56, lineHeight: 50, letterSpacing: -2.5, color: '#fff' }}>06:00</Text>
+          <Text style={{ fontWeight: '900', fontSize: 56, lineHeight: 62, letterSpacing: -2.5, color: '#fff' }}>06:00</Text>
         </View>
         <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.6, color: colors.fgInv4, marginTop: 14 }}>7 HOURS · SUNRISE WAKE · GENTLE</Text>
       </CardInv>
       <CardAlt style={{ marginTop: 14, padding: 14 }}>
         <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.8, color: colors.fg5 }}>YOU'RE ALL SET</Text>
-        <Text style={{ fontWeight: '900', fontSize: 22, lineHeight: 21, letterSpacing: -0.6, marginTop: 8 }}>
+        <Text style={{ fontWeight: '900', fontSize: 22, lineHeight: 26, letterSpacing: -0.6, marginTop: 8 }}>
           Two calendars, <Text style={{ color: colors.fg9 }}>one home.</Text>
         </Text>
         <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.6, color: colors.fg5, marginTop: 10 }}>

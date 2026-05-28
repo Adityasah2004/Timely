@@ -177,7 +177,7 @@ export function YouScreen() {
         <View style={[styles.row, { gap: 14, alignItems: 'center', marginBottom: 16 }]}>
           <UserChip id={state.viewer} size="xl" />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontWeight: '900', fontSize: 24, letterSpacing: -0.8, lineHeight: 23, color: '#fff' }}>{me.full}</Text>
+            <Text style={{ fontWeight: '900', fontSize: 24, letterSpacing: -0.8, lineHeight: 28, color: '#fff' }}>{me.full}</Text>
             <TouchableOpacity onPress={() => setEditRoleVisible(true)}>
               <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.6, color: colors.fgInv4, marginTop: 6 }}>
                 {me.role.toUpperCase() || 'TAP TO SET ROLE'}
@@ -197,7 +197,7 @@ export function YouScreen() {
             { v: String(state.todos.filter(t => t.who === state.viewer && !t.done).length), l: 'TO-DO · OPEN' },
           ].map((s, i) => (
             <View key={i} style={{ flex: 1, backgroundColor: colors.foreground, paddingVertical: 14, alignItems: 'center' }}>
-              <Text style={{ fontWeight: '900', fontSize: 22, letterSpacing: -0.8, lineHeight: 22, color: '#fff' }}>{s.v}</Text>
+              <Text style={{ fontWeight: '900', fontSize: 22, letterSpacing: -0.8, lineHeight: 26, color: '#fff' }}>{s.v}</Text>
               <Text style={{ fontFamily: 'Courier', fontSize: 9, textTransform: 'uppercase', letterSpacing: 1.6, color: colors.fgInv4, marginTop: 6, textAlign: 'center' }}>{s.l}</Text>
             </View>
           ))}
@@ -286,7 +286,7 @@ export function YouScreen() {
       {/* Re-onboard */}
       <CardAlt style={{ marginBottom: 22 }}>
         <Text style={{ fontFamily: 'Courier', fontSize: 10, textTransform: 'uppercase', letterSpacing: 2, color: colors.fg5, marginBottom: 8 }}>RESET</Text>
-        <Text style={{ fontWeight: '900', fontSize: 22, lineHeight: 21, letterSpacing: -0.6 }}>
+        <Text style={{ fontWeight: '900', fontSize: 22, lineHeight: 26, letterSpacing: -0.6 }}>
           Run setup again. <Text style={{ color: colors.fg9 }}>Fresh paint.</Text>
         </Text>
         <Text style={{ fontSize: 12.5, color: colors.fg5, fontWeight: '300', lineHeight: 19, marginTop: 8 }}>

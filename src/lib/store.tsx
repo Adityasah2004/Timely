@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import type { UserId, CalEvent, Alarm, Todo, ModalKind, TabName, ActivityItem, Notification, FocusSession } from './types';
+import type { UserId, CalEvent, Alarm, Todo, ModalKind, TabName, ActivityItem, Notification, FocusSession, ChatMessage, StartupDoc } from './types';
 import { USER_SLOTS } from './types';
 import { supabase } from './supabase';
 import type { DbNotification } from './supabase';
@@ -24,6 +24,8 @@ interface AppState {
   activity: ActivityItem[];
   notifications: Notification[];
   focusSessions: FocusSession[];
+  messages: ChatMessage[];
+  docs: StartupDoc[];
   modal: ModalKind;
   showOnboarding: boolean;
   clock: Date;
@@ -42,6 +44,8 @@ type Action =
   | { t: 'openAdd' }
   | { t: 'openNewAlarm' }
   | { t: 'openNewTodo' }
+  | { t: 'openNewDoc' }
+  | { t: 'openDoc'; doc: StartupDoc }
   | { t: 'closeModal' }
   | { t: 'onboard' }
   | { t: 'finishOnboard' }
@@ -60,6 +64,8 @@ type Action =
   | { t: 'setActivity'; activity: ActivityItem[] }
   | { t: 'setNotifications'; notifications: Notification[] }
   | { t: 'setFocusSessions'; sessions: FocusSession[] }
+  | { t: 'setMessages'; messages: ChatMessage[] }
+  | { t: 'setDocs'; docs: StartupDoc[] }
   | { t: 'markNotifRead'; id: string }
   | { t: 'setProfiles'; profiles: ProfileMap };
 
@@ -72,6 +78,8 @@ const INITIAL_STATE: AppState = {
   activity: [],
   notifications: [],
   focusSessions: [],
+  messages: [],
+  docs: [],
   modal: null,
   showOnboarding: false,
   clock: new Date(),
@@ -90,6 +98,8 @@ function reducer(s: AppState, a: Action): AppState {
     case 'openAdd':       return { ...s, modal: { kind: 'addEvent' } };
     case 'openNewAlarm':  return { ...s, modal: { kind: 'addAlarm' } };
     case 'openNewTodo':   return { ...s, modal: { kind: 'addTodo' } };
+    case 'openNewDoc':    return { ...s, modal: { kind: 'addDoc' } };
+    case 'openDoc':       return { ...s, modal: { kind: 'doc', doc: a.doc } };
     case 'closeModal':    return { ...s, modal: null };
     case 'onboard':       return { ...s, showOnboarding: true };
     case 'finishOnboard': return { ...s, showOnboarding: false };
@@ -119,6 +129,8 @@ function reducer(s: AppState, a: Action): AppState {
     case 'setActivity':        return { ...s, activity: a.activity };
     case 'setNotifications':   return { ...s, notifications: a.notifications };
     case 'setFocusSessions':   return { ...s, focusSessions: a.sessions };
+    case 'setMessages':        return { ...s, messages: a.messages };
+    case 'setDocs':            return { ...s, docs: a.docs };
     case 'markNotifRead':      return { ...s, notifications: s.notifications.map(n => n.id === a.id ? { ...n, read: true } : n) };
     case 'setProfiles':        return { ...s, profiles: a.profiles };
     default: return s;
@@ -175,8 +187,10 @@ function RealtimeBridge({ householdId, dispatch, refreshRef }: { householdId: st
   const onAlarms        = useCallback((as: Alarm[])           => dispatch({ t: 'setAlarms',        alarms: as }),         [dispatch]);
   const onActivity      = useCallback((a: ActivityItem[])     => dispatch({ t: 'setActivity',      activity: a }),        [dispatch]);
   const onNotifications = useCallback((ns: DbNotification[])  => dispatch({ t: 'setNotifications', notifications: ns.map(dbNotif) }), [dispatch]);
+  const onMessages      = useCallback((msgs: ChatMessage[])   => dispatch({ t: 'setMessages',       messages: msgs }),      [dispatch]);
+  const onDocs          = useCallback((docs: StartupDoc[])   => dispatch({ t: 'setDocs',           docs: docs }),          [dispatch]);
 
-  const { refresh } = useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivity, onNotifications });
+  const { refresh } = useRealtime({ householdId, onEvents, onTodos, onAlarms, onActivity, onNotifications, onMessages, onDocs });
   refreshRef.current = refresh;
   return null;
 }
